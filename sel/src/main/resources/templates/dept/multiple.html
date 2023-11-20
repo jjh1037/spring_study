@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>다중셀렉트</title>
+    <script src="/js/jquery.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        input {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        button {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        form {
+            margin: 50px;
+            padding: 50px;
+        }
+
+        .space {
+            margin: 50px 0;
+        }
+
+        .tip {
+            background-color:#eee;
+            margin: 4px;
+            padding: 4px 6px;
+            display: inline-block;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .del {
+            font-size:14px;
+            cursor:pointer;
+        }
+    </style>
+</head>
+
+<body>
+<a href="/selbox">다중셀렉트 테스트</a>
+<a href="/dept/sel">부서 생성</a>
+<form>
+    <fieldset>
+        <legend>부서</legend>
+        <p class="disp"></p>
+            <span class="tip">
+
+            </span>
+    </fieldset>
+</form>
+
+<p class="space"></p>
+
+<form>
+    <fieldset>
+        <legend>직책</legend>
+        <p class="disp2">
+            <label>부서</label>
+            <select class="deptCode" id="dept"></select><br />
+            <label>직책코드</label>
+            <input type="text" class="posCode"><br />
+
+            <label>직책명</label>
+            <input type="text" class="posName"><br />
+
+            <button class="btn">직책등록</button>
+        </p>
+    </fieldset>
+</form>
+
+    <script>
+
+        let deptSel = document.querySelector(".deptCode");
+        let posCode = document.querySelector(".posCode");
+        let posName = document.querySelector(".posName");
+
+        let btn = document.querySelector(".btn");
+
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            if(deptSel.options[deptSel.selectedIndex].value == "") {
+                alert("부서를 선택하세요");
+                deptSel.focus();
+                return false;
+            }
+
+            // alert(deptSel.options[deptSel.selectedIndex].value);
+
+            let obj = {
+                posCode: posCode.value,
+                posName: posName.value,
+                deptCode: deptSel.options[deptSel.selectedIndex].value
+            }
+
+            $.ajax({
+                type: "post",
+                url: "/pos/addPos",
+                dataType: "json",
+                data: obj,
+                success: function(res) {
+                    if(res.message = "ok") {
+                        alert("직책이 등록되었습니다.");
+                        location.href = "/dept/multi";
+                    }
+                }
+            });
+
+        });
+
+        $(function(){
+            $.ajax({
+                type: "post",
+                url: "/dept/sel",
+                dataType: "json",
+                success: function(res) {
+                    let output = "";
+                    res.dept.forEach((d) => {
+                        output += `<span class="tip">
+                                    ${d.deptName}
+                                    <span onclick="removeDept(${d.deptCode}, '${d.deptName}')"class="del">X</span>
+                                    </span>`;
+                        });
+                    document.querySelector(".disp").innerHTML = output;
+                }
+            });
+
+            $.ajax({
+                type: "post",
+                url: "/dept/sel",
+                dataType: "json",
+                success: function(res) {
+                    let output = "<option value=''>부서선택</option>";
+
+                    res.dept.forEach((d) => {
+                        output += `<option value="${d.deptCode}">${d.deptName}</option>`;
+                        });
+                    document.querySelector("#dept").innerHTML = output;
+                }
+            });
+        });
+
+        function removeDept(deptCode, deptName) {
+            if(confirm(deptName + "삭제하시면 복원할 수 없습니다.\n부서명을 삭제하시겠습니까?")) {
+                alert(deptCode);
+                // 삭제 ajax 실행
+            }
+        }
+
+    </script>
+</body>
+</html>

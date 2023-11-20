@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>다중셀렉트</title>
+    <script src="/js/jquery.js"></script>
+</head>
+<body>
+    <select class="deptCode" id="dept" onchange="getPos()"></select>
+    <select class="posCode" id="pos"></select>
+    <a href="/dept/multi">직책 등록</a>
+
+    <script>
+        function getPos() {
+            let sel = document.querySelector("#dept");
+
+            let obj = {
+                deptCode : sel.options[sel.selectedIndex].value
+                }
+
+            $.ajax({
+                type: "post",
+                url: "/pos/getPos",
+                dataType: "json",
+                data: obj,
+                success: function(res) {
+                    let output = "<option value=''>--직책 선택--</option>";
+                    res.pos.forEach((p) => {
+                        output += `<option value= "${p.posCode}">${p.posName}</option>`;
+                    });
+
+                    document.querySelector("#pos").innerHTML = output;
+                }
+            });
+        }
+
+        $(function() {
+            $.ajax({
+                type: "post",
+                url: "/dept/sel",
+                dataType: "json",
+                success: function(res) {
+                    let output = "<option value=''>부서선택</option>";
+
+                    res.dept.forEach((d) => {
+                        output += `<option value="${d.deptCode}">${d.deptName}</option>`;
+                        });
+                    document.querySelector("#dept").innerHTML = output;
+                }
+            });
+        })
+    </script>
+</body>
+</html>

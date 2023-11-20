@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>select box</title>
+    <script src="/js/jquery.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="/selbox">다중셀렉트 테스트</a>
+        <a href="/dept/multi">부서 삭제 및 직책 생성</a>
+        <form>
+            <select class="" id="dept"></select>
+        </form>
+
+        <form>
+            <h2>부서 등록</h2>
+            <ul>
+                <li>
+                    <label>부서코드</label>
+                    <input type="text" class="deptCode">
+                    <p style="color: red">부서코드는 3자리로 입력하셔야 합니다.</p>
+                </li>
+                <li>
+                    <label>부서명</label>
+                    <input type="text" class="deptName">
+                    <p style="color: red">부서이름은 10자리로 입력하셔야 합니다.</p>
+                </li>
+                <li>
+                    <button class="btn">부서등록</button>
+                </li>
+            </ul>
+        </form>
+    </div>
+
+    <script>
+        $(function(){
+            $.ajax({
+                type: "post",
+                url: "/dept/sel",
+                dataType: "json",
+
+                success: function(res) {
+                    let output = "<option value=''>--부서선택--</option>";
+                    res.dept.forEach((d) => {
+                        output += `<option value="${d.deptCode}">${d.deptName}</option>`;
+                    });
+
+                    document.querySelector("#dept").innerHTML = output;
+                }
+            });
+        });
+
+         let deptCode = document.querySelector(".deptCode");
+         let deptName = document.querySelector(".deptName");
+         let btn = document.querySelector(".btn");
+
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            let obj = {
+                deptCode: deptCode.value,
+                deptName: deptName.value
+            };
+
+            $.ajax({
+                type: "post",
+                url: "/dept/addDept",
+                dataType: "json",
+                data: obj,
+                success: function(res) {
+                    if(res.message == "ok") {
+                        alert("부서가 등록 되었습니다.");
+                        location.href = "/dept/sel";
+                    }
+                }
+            });
+        });
+    </script>
+
+
+</body>
+</html>
