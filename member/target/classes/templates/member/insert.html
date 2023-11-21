@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>코리아아이티 아카데미 > Member > Insert</title>
+</head>
+<body>
+    <a th:href="@{/}">코리아아이티 메인 페이지</a>
+    <a th:href="@{/member/insert}">회원가입</a>
+    <a th:href="@{/login}">로그인</a>
+    <a th:href="@{/member}">회원목록</a>
+
+    <h1>코리아아이티 아카데미 회원 가입 페이지</h1>
+
+    <form autocomplete="off" method="post" action="/member/insert" onsubmit="return frmCheck()">
+        <ul>
+            <li>
+                <label>아이디</label>
+                <input type="text" name="userid" tabindex="1" />
+            </li>
+            <li>
+                <label>비밀번호</label>
+                <input type="password" name="passwd" tabindex="3" />
+            </li>
+            <li>
+                <label>이름</label>
+                <input type="text" name="username" tabindex="2" />
+            </li>
+            <li>
+                <input type="submit" value="회원가입">
+            </li>
+        </ul>
+    </form>
+
+
+
+    <script>
+        function frmCheck() {
+            let userid = document.querySelector("input[name=userid");
+            let passwd = document.querySelector("input[name=passwd");
+            let username = document.querySelector("input[name=username");
+
+            if(userid.value == "" ) {
+                alert("아이디를 입력하세요");
+                userid.focus();
+                return false;
+            }
+
+            if(userid.value.length < 8) {
+                alert("아이디 길이가 짧습니다.\n8자리 이상 입력하세요.");
+                userid.value = "";
+                userid.focus();
+                return false;
+            }
+
+            if(passwd.value == "" ) {
+                alert("비밀번호를 입력하세요");
+                passwd.focus();
+                return false;
+            }
+
+            if(username.value == "" ) {
+                alert("이름를 입력하세요");
+                username.focus();
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

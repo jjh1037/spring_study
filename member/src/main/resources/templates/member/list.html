@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>코리아아이티 아카데미 > Member > List</title>
+</head>
+<body>
+    <a th:href="@{/}">코리아아이티 메인 페이지</a>
+    <a th:href="@{/member/insert}">회원가입</a>
+    <a th:href="@{/login}">로그인</a>
+    <a th:href="@{/member}">회원목록</a>
+
+    <h1>코리아아이티 아카데미 회원 목록 페이지</h1>
+
+    <!-- RedirectAttributes를 사용하여 타임리프를 사용하여 글자를 출력-->
+    <p>[[${message}]]</p>
+    <p th:text="${message}"></p>
+
+<!--    null 표현 오류가 있어서 사용을 안함 -->
+<!--    <script th:inline="javascript">-->
+<!--        alert([[${message}]]);-->
+<!--    </script>-->
+
+    게시물 수 : [[${cnt}]]개
+
+    <form method="get" action="/member" onsubmit="return searchList()">
+        <select name="searchType" id="searchType">
+            <option value="">선택</option>
+            <option value="userid">아이디</option>
+            <option value="username">이름</option>
+        </select>
+        <input type="text" name="words" placeholder="검색어 입력">
+        <input type="submit" value="검색">
+    </form>
+
+    <table border="1">
+        <tr>
+            <td>번호</td>
+            <td>아이디</td>
+            <td>비밀번호</td>
+            <td>사용자이름</td>
+            <td>가입일</td>
+            <td>비고</td>
+        </tr>
+                <!-- 별명: ${controller 변수}-->
+        <tr th:each="m: ${mem}">
+            <td>[[${m.id}]]</td>
+            <td>[[${m.userid}]]</td>
+            <td>[[${m.passwd}]]</td>
+            <td>[[${m.username}]]</td>
+            <td>[[${m.regdate}]]</td>
+            <td>
+                <button >보기</button>
+                <button>수정</button>
+                <button th:onclick="deleteMember([[${m.id}]])">삭제</button>
+            </td>
+        </tr>
+    </table>
+
+
+    <script>
+        function deleteMember(mid) {
+            if(confirm('회원정보를 삭제하시겠습니까?')) {
+                location.href = '/member/delete?id=' + mid;
+            }
+        }
+
+        function searchList() {
+            let searchType = document.querySelector("#searchType");
+            let words = document.querySelector("input[name=words]");
+
+            if(searchType.options[searchType.selectedIndex].value == "") {
+                alert("검색 타입을 선택하세요");
+                searchType.focus();
+                return false;
+            }
+
+            if(words.value == "") {
+                alert("검색어를 입력하세요");
+                words.focus();
+                return false;
+            }
+        }
+    </script>
+
+</body>
+</html>
