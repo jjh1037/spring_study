@@ -100,7 +100,7 @@
 <div class="wrap">
     <h3>코리아아이티 아카데미 > QnA 게시판 > 글 쓰기</h3>
     <!-- enctype은 첨부파일을 사용할때 form에 붙인다-->
-    <form action="/board/write" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form onsubmit="return frmCheck()" action="/board/write" method="post" enctype="multipart/form-data" autocomplete="off">
         <ul>
             <li>
                 <label>제목</label>
@@ -134,12 +134,9 @@
         let writer = document.querySelector("input[name=writer]");
         let content = document.querySelector("textarea[name =content]");
 
-        let submit = document.querySelector("input[type=submit]");
+        function frmCheck() {
 
-        submit.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-           if(subject.value == "") {
+            if(subject.value == "") {
                 alert("게시물 제목을 입력하세요");
                 subject.focus();
                 return false;
@@ -156,9 +153,7 @@
                 content.focus();
                 return false;
             }
-
-        });
-
+        }
 
         function move() {
             location.href = "/board/list";

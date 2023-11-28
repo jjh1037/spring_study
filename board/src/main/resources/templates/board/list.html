@@ -8,6 +8,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>코리아아이티 아카데미 > 글 목록보기</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 
@@ -107,10 +108,14 @@
             background-color: #DB2828;
         }
 
-        .bottom {
+        .bottom, .top {
             display: flex;
             justify-content: space-between;
             margin-top: 10px;
+        }
+
+        h3 {
+            margin-bottom: 50px;
         }
 
         .bottom-center a{
@@ -124,19 +129,41 @@
             line-height: 30px;
             font-size: 14px;
         }
+
+        .cnt {
+        color: #f00;
+        font-weight: bold;
+        text-decoration: underline;
+        }
+
+        a.active:hover {
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 <body>
     <div class="wrap">
         <h3>코리아아이티 아카데미 > QnA 게시판 > 글 목록보기</h3>
+        <hr style="margin-top: 10px" />
         <form action="" method="get">
-            <select name="searchType" class="searchType">
-                <option value="subject">제목</option>
-                <option value="writer">작성자</option>
-                <option value="content">내용</option>
-            </select>
-            <input type="text" name="words" class="words" required>
-            <input type="submit" class="btn" value="검색">
+            <div class="top">
+                <div class="top-left">
+                    <span>
+                        전체 게시물 수 : <span class="cnt">[[${cnt}]]</span> 개
+                    </span>
+                </div>
+                <div class="top-right">
+                    <select name="searchType" class="searchType">
+                        <option value="subject">제목</option>
+                        <option value="writer">작성자</option>
+                        <option value="content">내용</option>
+                    </select>
+                    <input type="text" name="words" class="words" required>
+                    <input type="submit" class="btn" value="검색">
+                </div>
+            </div>
         </form>
 
         <table>
@@ -149,13 +176,24 @@
                 <th>첨부파일</th>
                 <th>비고</th>
             </tr>
-            <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
+            <tr th:each="korBoard: ${list}">
+                <td>[[${korBoard.id}]]</td>
+                <td>
+                    <a th:href="@{/board/view?(id=${korBoard.id})}" class="active"> <!-- 상세보기 만들기 -->
+                        [[${korBoard.subject}]]
+                    </a>
+                </td>
+                <td>[[${korBoard.writer}]]</td>
+                <td>[[${korBoard.visit}]]</td>
+                <td>[[${korBoard.regdate}]]</td>
+                <td>
+                    <th:block th:if="${not #strings.isEmpty(korBoard.orgName)}">
+                        <i class="fa-solid fa-file" style="color: #f00"></i>
+                    </th:block>
+                    <th:block th:unless="${not #strings.isEmpty(korBoard.orgName)}">
+                        -
+                    </th:block>
+                </td>
                 <td>
                     <a href="" class="btn2 blue">수정</a>
                     <a href="" class="btn2 red">삭제</a>
