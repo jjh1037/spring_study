@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="ko">
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -13,21 +12,21 @@
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 
         * {
-            margin: 0;
-            padding: 0;
+            margin:0;
+            padding:0;
             box-sizing: border-box;
         }
 
         a {
-            color: #333;
+            color:#333;
             text-decoration: none;
         }
 
         ul li {
-            list-style: none;
+            list-style:none;
         }
 
-        table{
+        table {
             border-collapse: collapse;
             width:100%;
         }
@@ -35,43 +34,61 @@
         body {
             font-family: 'Noto Sans KR', sans-serif;
         }
-        /* reset */
+
+        /* ----------------------------------------------- */
 
         .wrap {
             box-shadow: 0 0 5px 0.25rem #eee;
-            border: 1px solid #ccc;
+            border:1px solid #ccc;
             width: 100%;
-            max_width:98%;
+            max-width: 98%;
             margin: 10px auto;
-            padding: 10px;
+            padding: 20px;
             border-radius: 3px;
         }
 
-        form{
-            text-align: right;
+        form {
+            text-align:right;
             margin-bottom: 5px;
         }
 
-        .searchType, .words{
-            padding: 0.6rem 0.75rem;
-            font-size: 16px;
+        .searchType {
+            padding:0.4rem 0.3rem;
+            font-size: 15px;
+            color:#212529;
+            background-color:#fff;
+            border:1px solid #ced4da;
+        }
+
+        .words {
+            padding:0.5rem 0.75rem;
+            font-size: 14px;
+            color:#212529;
+            background-color:#fff;
+            border:1px solid #ced4da;
+        }
+
+        .searchType:focus, input.words:focus {
             color: #212529;
             background-color: #fff;
-            border: 1px solid #ced4da;
+            border-color: #86b7fe;
+            outline: 0;
+            box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
         }
 
-        .btn{
+        .btn {
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #0b5ed7;
-            padding: 5px 15px;
-            font-size: 16px;
-            border: 0;
+            padding: 7px 15px;
+            font-size: 14px;
+            border:0;
             color:#fff;
             cursor:pointer;
-            vertical-align: middle;
+            vertical-align: top;
+            border-radius: 3px;
         }
 
-        th, td{
+        th, td {
             border:1px solid #eee;
         }
 
@@ -80,7 +97,7 @@
         }
 
         tr:first-child {
-            background-color: #f7f7f7;
+            background-color:#f7f7f7;
         }
 
         td {
@@ -94,10 +111,10 @@
 
         .btn2 {
             padding: 5px 12px;
-            color: #fff;
+            color:#fff;
             border-radius: 3px;
             font-size: 14px;
-            cursor: pointer;
+            cursor:pointer;
         }
 
         .blue {
@@ -109,7 +126,7 @@
         }
 
         .bottom, .top {
-            display: flex;
+            display:flex;
             justify-content: space-between;
             margin-top: 10px;
         }
@@ -118,36 +135,35 @@
             margin-bottom: 50px;
         }
 
-        .bottom-center a{
-            width: 30px;
-            height: 30px;
-            background-color: #000;
-            color: #fff;
+        .bottom-center a {
+            width:30px;
+            height:30px;
+            background-color:#000;
+            color:#fff;
             display:inline-block;
             border-radius: 50%;
-            text-align: center;
-            line-height: 30px;
-            font-size: 14px;
+            text-align:center;
+            line-height:30px;
+            font-size:14px;
         }
 
         .cnt {
-        color: #f00;
-        font-weight: bold;
-        text-decoration: underline;
+            color:#f00;
+            font-weight: bold;
+            text-decoration: underline;
         }
 
         a.active:hover {
             text-decoration: underline;
             font-weight: bold;
         }
-
     </style>
 </head>
 <body>
     <div class="wrap">
         <h3>코리아아이티 아카데미 > QnA 게시판 > 글 목록보기</h3>
-        <hr style="margin-top: 10px" />
-        <form action="" method="get">
+
+        <form action="/board/list" method="get">
             <div class="top">
                 <div class="top-left">
                     <span>
@@ -165,7 +181,6 @@
                 </div>
             </div>
         </form>
-
         <table>
             <tr>
                 <th>번호</th>
@@ -179,6 +194,11 @@
             <tr th:each="korBoard: ${list}">
                 <td>[[${korBoard.id}]]</td>
                 <td>
+                    <th:block th:if="${korBoard.depth > 1}">
+                        <th:block th:each="seq: ${#numbers.sequence(2, korBoard.depth)}">
+                            <span style="color:#f00">[Re]</span>
+                        </th:block>
+                    </th:block>
                     <a th:href="@{/board/view?(id=${korBoard.id})}" class="active"> <!-- 상세보기 만들기 -->
                         [[${korBoard.subject}]]
                     </a>
@@ -187,16 +207,17 @@
                 <td>[[${korBoard.visit}]]</td>
                 <td>[[${korBoard.regdate}]]</td>
                 <td>
-                    <th:block th:if="${not #strings.isEmpty(korBoard.orgName)}">
-                        <i class="fa-solid fa-file" style="color: #f00"></i>
-                    </th:block>
-                    <th:block th:unless="${not #strings.isEmpty(korBoard.orgName)}">
+                   <th:block th:if="${ not #strings.isEmpty(korBoard.orgName) }">
+                       <i class="fa-solid fa-file" style="color:#f00"></i>
+                   </th:block>
+
+                    <th:block th:unless="${ not #strings.isEmpty(korBoard.orgName) }">
                         -
                     </th:block>
                 </td>
                 <td>
                     <a href="" class="btn2 blue">수정</a>
-                    <a href="" class="btn2 red">삭제</a>
+                    <a href="#" class="btn2 red" th:onclick="remove([[${korBoard.id}]])">삭제</a>
                 </td>
             </tr>
         </table>
@@ -204,24 +225,23 @@
             <div class="bottom-left">
                 <a th:href="@{/board/list}" class="btn2 blue">목록으로</a>
             </div>
+
             <div class="bottom-center">
                 <a href="">1</a>
             </div>
+
             <div class="bottom-right">
                 <a th:href="@{/board/write}" class="btn2 red">글쓰기</a>
             </div>
         </div>
     </div>
+
+    <script>
+        function remove(id) {
+           if( confirm(id + "번 게시물을 삭제 하시겠습니까?") ) {
+                location.href = "/board/delete?id="+id;
+           }
+        }
+    </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-

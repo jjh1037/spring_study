@@ -1,7 +1,9 @@
 package com.example.board.controller;
 
+
 import com.example.board.dto.BoardDto;
-import com.example.board.mapper.BoardMapper;
+import com.example.board.mappers.BoardMapper;
+import com.example.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -30,13 +32,19 @@ public class BoardController {
     @Autowired
     BoardMapper boardMapper;
 
+    @Autowired
+    BoardService boardService;
+
     @Value("${fileDir}")
     String fileDir;
 
     @GetMapping("/board/list")
-    public String getList(Model model) {
-        model.addAttribute("cnt", boardMapper.getListCount());
-        model.addAttribute("list", boardMapper.getList());
+    public String getList(Model model,
+                          @RequestParam(value="searchType", defaultValue = "") String searchType,
+                          @RequestParam(value="words", defaultValue = "") String words) {
+
+        model.addAttribute("cnt", boardService.getSearchCnt(searchType, words));
+        model.addAttribute("list", boardService.getSearch(searchType, words));
         return "board/list";
     }
 
@@ -46,42 +54,40 @@ public class BoardController {
     }
 
     @PostMapping("/board/write")
-    public String setWrite(@ModelAttribute BoardDto boardDto, @RequestParam("file") MultipartFile mf) throws IOException {
+    public String setWrite(@ModelAttribute BoardDto boardDto,
+                           @RequestParam("file") MultipartFile mf) throws IOException {
 
-
-        if(!mf.isEmpty()) {
+        if( !mf.isEmpty() ) {
             String folderName = new SimpleDateFormat("yyyyMMdd").format(System.currentTimeMillis());
-//            File makeFolder = new File(fileDir + "/" + folderName);
             File makeFolder = new File(fileDir + folderName);
 
-            if(!makeFolder.exists()) {
+            if( !makeFolder.exists() ) {
                 makeFolder.mkdir();
             }
 
             String orgName = mf.getOriginalFilename();
             String ext = orgName.substring(orgName.lastIndexOf("."));
             String uuid = UUID.randomUUID().toString();
-            String savedFileName = uuid + ext;
-            String savedFilePathName = fileDir + folderName + "/" + savedFileName;
+            String saveFileName = uuid + ext;
+            String savedFilePathName = fileDir + folderName + "/" + saveFileName;
 
-            // db에 넣기전에 객체에 넣어야 함
-            // boardDto => db
             boardDto.setOrgName(orgName);
-            boardDto.setSavedFileName(savedFileName);
+            boardDto.setSavedFileName(saveFileName);
             boardDto.setSavedFilePathName(savedFilePathName);
             boardDto.setSavedFileSize(mf.getSize());
             boardDto.setFolderName(folderName);
             boardDto.setExt(ext);
 
-            // 파일 업로드 쓰기
-            mf.transferTo(new File(savedFilePathName));
+
+
+            mf.transferTo( new File(savedFilePathName) );
         }
+
         int maxGrp = boardMapper.getMaxGrp();
         boardDto.setGrp(maxGrp);
-
         boardMapper.setWrite(boardDto);
 
-        return  "redirect:/board/list";
+        return "redirect:/board/list";
     }
 
     @GetMapping("/board/view")
@@ -101,5 +107,36 @@ public class BoardController {
 
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition).body(resource);
     }
+
+    @GetMapping("/board/delete")
+    public String setDelete(@RequestParam int id) {
+        boardService.setDelete(id);
+        return "redirect:/board/list";
+    }
+
+    @GetMapping("/board/reply")
+    public String getReply(@RequestParam int id, Model model) {
+        BoardDto b = boardMapper.getView(id);
+
+        model.addAttribute("reply", b);
+        return "board/reply";
+    }
+
+
+    @PostMapping("/board/reply")
+    public String setReply(@ModelAttribute BoardDto boardDto,
+                           @RequestParam("file") MultipartFile mf) throws IOException {
+
+        BoardDto bd = boardMapper.getView(boardDto.getId());
+
+        boardDto.setGrp(bd.getGrp());
+        boardDto.setSeq(bd.getSeq() + 1);
+        boardDto.setDepth(bd.getDepth() + 1);
+
+        boardMapper.setReply(boardDto);
+
+        return "redirect:/board/list";
+    }
+
 
 }

@@ -6,7 +6,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>코리아아이티 아카데미 > 글 쓰기</title>
+    <title>코리아아이티 아카데미 > 답글달기</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 
@@ -98,9 +98,9 @@
 </head>
 <body>
 <div class="wrap">
-    <h3>코리아아이티 아카데미 > QnA 게시판 > 글 쓰기</h3>
+    <h3>코리아아이티 아카데미 > QnA 게시판 > 답글달기</h3>
     <!-- enctype은 첨부파일을 사용할때 form에 붙인다-->
-    <form onsubmit="return frmCheck()" action="/board/write" method="post" enctype="multipart/form-data">
+    <form onsubmit="return frmCheck()" action="/board/reply" method="post" enctype="multipart/form-data">
         <ul>
             <li>
                 <label>제목</label>
@@ -112,17 +112,18 @@
             </li>
             <li>
                 <label>내용</label>
-                <textarea name="content" class="input width-100 height-400 noto"></textarea>
+                <textarea name="content" class="input width-100 height-400 noto">[원본 글]: [[${reply.content}]]</textarea>
             </li>
             <li>
                 <label>첨부파일</label>
                 <input type="file" name="file" class="input width-100" />
             </li>
             <li>
-                <input type="submit" value="글저장" class="btn2 red">
+                <input type="submit" value="답글달기" class="btn2 red">
                 <input type="reset" value="목록" class="btn2 blue" onclick="move()">
             </li>
         </ul>
+        <input type="hidden" name="id" th:value="${reply.id}">
     </form>
     <script>
         window.onload = function() { // $(function() {} )

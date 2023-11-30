@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="ko">
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -13,44 +12,45 @@
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 
         * {
-            margin: 0;
-            padding: 0;
+            margin:0;
+            padding:0;
             box-sizing: border-box;
         }
 
         a {
-            color: #333;
+            color:#333;
             text-decoration: none;
         }
 
         ul li {
-            list-style: none;
+            list-style:none;
         }
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
         }
-        /* ----------------reset------------------- */
+
+        /* ----------------------------------------------- */
 
         .wrap {
             box-shadow: 0 0 5px 0.25rem #eee;
-            border: 1px solid #ccc;
+            border:1px solid #ccc;
             width: 100%;
-            max_width:98%;
+            max-width: 98%;
             margin: 10px auto;
-            padding: 10px;
+            padding: 20px;
             border-radius: 3px;
         }
 
         .input {
-            padding: 0.5rem 0.75rem;
+            padding:0.5rem 0.75rem;
             font-size: 14px;
-            color: #212529;
-            background-color: #fff;
+            color:#212529;
+            background-color:#fff;
             border:1px solid #ced4da;
-            display: block;
+            display:block;
             border-radius: 3px;
-            outline: 0;
+            outline:0;
         }
 
         .width-100 {
@@ -62,25 +62,25 @@
         }
 
         .height-400 {
-            height: 400px;
+            height:400px;
         }
 
         ul li {
-            margin-top: 20px;
-            margin-bottom: 5px;
+            margin-top:20px;
+            margin-bottom:5px;
         }
 
         .input:focus {
-            border: 1px solid #86b7fe;
+            border:2px solid #86b7fe;
         }
 
         .btn2 {
             padding: 8px 12px;
-            color: #fff;
+            color:#fff;
             border-radius: 3px;
             font-size: 14px;
-            cursor: pointer;
-            border: 0;
+            cursor:pointer;
+            border:0;
         }
 
         .blue {
@@ -100,16 +100,16 @@
         }
 
         p i {
-            color: #f00;
-            font-size:20px;
+            color:#f00;
+            font-size:50px;
         }
 
-                .btn2 {
-            padding: 5px 12px;
-            color: #fff;
+        .btn2 {
+            padding: 8px 12px;
+            color:#fff;
             border-radius: 3px;
             font-size: 14px;
-            cursor: pointer;
+            cursor:pointer;
         }
 
         .blue {
@@ -121,44 +121,50 @@
         }
 
         .bottom {
-            display: flex;
+            display:flex;
             justify-content: space-between;
             margin-top: 10px;
         }
 
-        .bottom-center a{
-            width: 30px;
-            height: 30px;
-            background-color: #000;
-            color: #fff;
+        .bottom-center a {
+            width:30px;
+            height:30px;
+            background-color:#000;
+            color:#fff;
             display:inline-block;
             border-radius: 50%;
-            text-align: center;
-            line-height: 30px;
-            font-size: 14px;
+            text-align:center;
+            line-height:30px;
+            font-size:14px;
         }
-
     </style>
 </head>
 <body>
 <div class="wrap">
     <h3>코리아아이티 아카데미 > QnA 게시판 > 글 상세보기</h3>
-    <!-- enctype은 첨부파일을 사용할때 form에 붙인다-->
+    <hr style="margin-top: 10px"/>
     <form>
         <ul>
             <li>
                 <label>제목</label>
-                <p>[[${view.subject}]]</p>
+                <p>
+                    [[${view.subject}]]
+                </p>
             </li>
             <li>
                 <label>작성자</label>
-                <p>[[${view.writer}]]</p>
+                <p>
+                    [[${view.writer}]]
+                </p>
             </li>
             <li>
                 <label>내용</label>
-                <p>[[${view.content}]]</p>
+                <p>
+                    [[${view.content}]]
+                </p>
             </li>
             <li>
+                <label>조회수</label>
                 <p>
                     [[${view.visit}]] 회
                 </p>
@@ -166,20 +172,28 @@
             <li>
                 <label>첨부파일</label>
                 <p>
-                    <th:block th:if="${not #strings.isEmpty(view.ext)}">
+                    <p>
+                        <img th:src="@{|/${view.folderName}/${view.savedFileName}|}" width="250" alt="">
+                    </p>
+                    <th:block th:if="${ not #strings.isEmpty(view.ext) }">
+
                         <th:block th:switch="${view.ext}">
                             <th:block th:case=".jpg">
-                                <i class="fa-solid fa-file"></i>
+                                <i class="fa-solid fa-file-image"></i>
                             </th:block>
+
                             <th:block th:case=".png">
-                                <i class="fa-solid fa-file"></i>
+                                <i class="fa-solid fa-file-image"></i>
                             </th:block>
+
                             <th:block th:case=".ppt">
-                                <i class="fa-solid fa-file-powerpoint"></i>
+                                <i class="fa-regular fa-file-powerpoint"></i>
                             </th:block>
+
                             <th:block th:case=".xls">
-                                <i class="fa-solid fa-file-excel"></i>
+                                <i class="fa-regular fa-file-excel"></i>
                             </th:block>
+
                             <th:block th:case="*">
                                 <i class="fa-regular fa-file"></i>
                             </th:block>
@@ -188,11 +202,11 @@
                             <p>
                                 <a th:href="@{/download?(filename=${view.savedFilePathName})}">다운로드</a>
                             </p>
-
                         </th:block>
+
                     </th:block>
 
-                    <th:block th:unless="${not #strings.isEmpty(view.ext)}">
+                    <th:block th:unless="${ not #strings.isEmpty(view.ext) }">
                         <span>첨부파일이 없습니다.</span>
                     </th:block>
                 </p>
@@ -203,16 +217,21 @@
         <div class="bottom-left">
             <a th:href="@{/board/list}" class="btn2 red">목록으로</a>
         </div>
+
         <div class="bottom-right">
-            <a th:href="@{/board/reply}" class="btn2 blue">답글달기</a>
+            <a th:href="@{/board/reply?(id=${view.id})}" class="btn2 blue">답글달기</a>
             <a th:href="@{/board/update}" class="btn2 blue">수정하기</a>
-            <a th:href="@{/board/delete}" class="btn2 blue">삭제하기</a>
+            <a href="#" class="btn2 blue" th:onclick="remove([[${view.id}]])">삭제하기</a>
             <a th:href="@{/board/write}" class="btn2 blue">글쓰기</a>
         </div>
     </div>
 </div>
-    <script>
-
-    </script>
+<script>
+    function remove(id) {
+       if( confirm(id + "번 게시물을 삭제 하시겠습니까?") ) {
+            location.href = "/board/delete?id="+id;
+       }
+    }
+</script>
 </body>
 </html>

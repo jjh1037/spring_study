@@ -1,4 +1,5 @@
-USE koreaitdb;
+
+use koreaitdb;
 
 -- 기본 정렬은 id
 CREATE TABLE temp(
@@ -44,3 +45,27 @@ seq int,
 depth int,
 primary key(id)
 );
+
+-- 검색 : 조건(where)
+-- subject
+SELECT count(*) FROM board WHERE subject = '코리아아이티 게시판'
+ORDER BY id DESC;
+
+-- writer
+SELECT count(*) FROM board WHERE writer = '관리자'
+ORDER BY id DESC;
+
+-- content 유사어 검색
+SELECT count(*) FROM board WHERE content LIKE '%비서실%'
+ORDER BY id DESC;
+
+
+SELECT writer FROM board WHERE writer = '관리자';
+
+WHERE content LIKE '%서비스%'
+
+SELECT content FROM board WHERE content LIKE '%비서실%';
+
+
+
+SELECT * FROM board WHERE content LIKE '%서비스%'
