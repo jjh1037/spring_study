@@ -1,0 +1,102 @@
+
+@charset 'utf-8';
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+/* -------------------- reset --------------------*/
+:root {
+    --max-width: 1440px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+ul li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+/* -------------------- nav --------------------*/
+nav{
+    width: 100%;
+    background-color: rgb(41, 102, 71);
+}
+
+.nav_container {
+    max-width: var(--max-width);
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    background-color: rgb(41, 102, 71);
+    margin: 0 auto;
+}
+
+.nav_container a {
+    color: white;
+}
+
+/* -------------------- header --------------------*/
+header {
+    width: 100%;
+}
+
+.header_container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.header_wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left_icon ul, .right_icon ul{
+    display: flex;
+    padding: 0;
+}
+
+.left_icon ul li {
+    margin-right: 15px;
+}
+
+.right_icon ul li {
+    margin-left: 15px;
+}
+
+.category_wrap ul{
+    display: flex;
+    justify-content: center;
+}
+
+.category_wrap ul li {
+    margin-right: 40px;
+    font-weight: bold;
+    color: #333;
+}
+/* main */
+main {
+    width: 100%;
+    height: 100vh;
+    background-color: #eee;
+}
+.main_container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+img {
+    width: 100%;
+    margin-top: 20px;
+}
+
+
+

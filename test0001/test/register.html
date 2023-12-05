@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 화면</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+
+        /* -------------------- reset ------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ccc;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body input {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        ul li {
+            list-style: none;
+        }
+
+        a{
+            text-decoration: none;
+            color: #333;
+        }
+
+        /* -------------------- logo ------------------------- */
+        .login_container {
+            width: 400px;
+            height: 800px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding: 70px 40px;
+            border-radius: 3px;     
+
+            box-shadow: 0 0 10px 5px rgba(255, 99, 71, 0.2);
+            background-color: white;
+            text-align: center;     
+        }
+
+        img{
+            width: 120px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+        }
+
+        /* --------------------insert_wrap------------------------- */
+        .insert_wrap {
+            display: block;
+        }
+
+        label{
+            display: flex;
+            justify-content: left;
+        }
+
+        input{
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border: 1px solid #aaa;
+            outline: none;
+        }
+
+        input:focus{
+            border: 1px solid rgba(11, 94, 215, 0.6);
+            box-shadow: 0 0 3px 1px rgba(11, 94, 215, 0.6);
+        }        
+
+        button{
+            width: 100px;
+            padding: 10px;
+            margin: 20px 0px 10px 220px;
+            background-color: rgb(11, 94, 215);
+            color: white;
+            border: none;
+            border-radius: 3px;
+        }
+
+        .register_wrap{
+            text-align: left;
+        }
+
+        .radio_li input{
+            width: 20px;
+            font-size: 20px;
+        }
+
+        .radio_li input:last-child{
+            margin-left: 10px;
+        }
+        .radio_li_wrap{
+            display: flex;
+            justify-content: left;
+            margin-top: 5px;
+        }
+
+        .select_container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .select1, .select2 {
+            width: 48%;
+        }
+
+        #selone, #seltwo{
+            width: 100%;
+            height: 37px;
+            outline: none;
+            border: 1px solid #aaa;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="login_container">
+        <div class="img_wrap">
+            <img src="./img/logo.png" alt="">
+        </div>
+        <h2>KIT MANAGEMENT SYSTEM</h2>
+
+        <div class="insert_wrap">
+            <form>
+                <ul>
+                    <li>
+                        <label>Email.</label>
+                        <input type="text" name="email" class="email">
+                    </li>
+                    <li>
+                        <label>Password.</label>
+                        <input type="password" name="passwd" class="passwd">
+                    </li>
+                    <li>
+                        <label>Re-Password.</label>
+                        <input type="password" name="rePasswd" class="rePasswd">
+                    </li>
+                    <li>
+                        <label>Name.</label>
+                        <input type="text" name="uname" class="uname">
+                    </li>
+                    <li class="radio_li">
+                        <label>Gender.</label>
+                        <div class="radio_li_wrap">
+                            <input type="radio" name="gender" value="man"> MAN
+                            <input type="radio" name="gender" value="woman"checked> WOMAN
+
+                        </div>
+                    </li>
+                    <li>
+                        <div class="select_container">
+                            <div class="select1">
+                                <label cl>Dept.</label>
+                                <select name="selone" id="selone">
+                                    <option value="">Choose One</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                </select>
+                            </div>
+                            <div class="select2">
+                                <label>Position.</label>
+                                <select name="seltwo" id="seltwo">
+                                    <option value="">Choose Two</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                    </li>
+                    <li>
+                        <button type="submit">REGISTER</button>
+                    </li>
+                </ul> 
+            </form>
+        </div>
+
+        <div class="register_wrap">
+            <a href="./login.html">Would you like to Login?</a>
+        </div>
+    </div>
+
+    <script>
+        // 유효성 체크
+        let email = document.querySelector(".email");
+        let passwd = document.querySelector(".passwd")
+        let rePasswd = document.querySelector(".rePasswd")
+        let uname = document.querySelector(".uname")
+        let selone = document.querySelector("#selone")
+        let seltwo = document.querySelector("#seltwo")
+
+        let btn = document.querySelector("button")
+        
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            if(email.value == ""){
+                alert("이메일을 입력하시오.")
+                email.focus();
+                return false;
+            }
+
+            if(passwd.value == ""){
+                alert("비밀번호를 입력하시오.")
+                passwd.focus();
+                return false;
+            }
+
+            if(rePasswd.value == ""){
+                alert("비밀번호 재확인을 입력하시오.")
+                rePasswd.focus();
+                return false;
+            }
+
+            if(uname.value == ""){
+                alert("이름을 입력하시오.")
+                uname.focus();
+                return false;
+            }
+
+            if(selone.value == ""){
+                alert("부서를 입력하시오.")
+                selone.focus();
+                return false;
+            }
+
+            if(seltwo.value == ""){
+                alert("부서를 입력하시오.")
+                seltwo.focus();
+                return false;
+            }         
+
+        });
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 화면</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+
+        /* -------------------- reset ------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ccc;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body input {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        ul li {
+            list-style: none;
+        }
+
+        a{
+            text-decoration: none;
+            color: #333;
+        }
+
+        /* -------------------- logo ------------------------- */
+        .login_container {
+            width: 400px;
+            height: 500px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding: 70px 40px;
+            border-radius: 3px;     
+
+            box-shadow: 0 0 10px 5px rgba(255, 99, 71, 0.2);
+            background-color: white;
+            text-align: center;     
+        }
+
+        img{
+            width: 120px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+        }
+
+        /* --------------------insert_wrap------------------------- */
+        .insert_wrap {
+            display: block;
+        }
+
+        label{
+            display: flex;
+            justify-content: left;
+        }
+
+        input{
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border: 1px solid #aaa;
+            outline: none;
+        }
+
+        input:focus{
+            border: 1px solid rgba(11, 94, 215, 0.6);
+            box-shadow: 0 0 3px 1px rgba(11, 94, 215, 0.6);
+        }        
+
+        button{
+            width: 80px;
+            padding: 10px;
+            background-color: rgb(11, 94, 215);
+            color: white;
+            border: none;
+            border-radius: 3px;
+            margin-left: 240px;
+        }
+
+        .register_wrap{
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="login_container">
+        <div class="img_wrap">
+            <img src="./img/logo.png" alt="">
+        </div>
+        <h2>KIT MANAGEMENT SYSTEM</h2>
+
+        <div class="insert_wrap">
+            <form>
+                <ul>
+                    <li>
+                        <label>Email.</label>
+                        <input type="text" name="email" class="email">
+                    </li>
+                    <li>
+                        <label>Password.</label>
+                        <input type="password" name="passwd" class="passwd">
+                    </li>
+                    <li>
+                        <button type="submit">LOGIN</button>
+                    </li>
+                </ul> 
+            </form>
+        </div>
+
+        <div class="register_wrap">
+            <a href="./register.html">Would you like to register?</a>
+        </div>
+    </div>
+
+    <script>
+        // 유효성 체크 미완
+        let email = document.querySelector(".email");
+        let passwd = document.querySelector(".passwd")
+        let btn = document.querySelector("button")
+        
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            if(email.value == ""){
+                alert("이메일을 입력하시오.")
+                email.focus();
+                return false;
+            }
+
+            if(passwd.value == ""){
+                alert("비밀번호를 입력하시오.")
+                passwd.focus();
+                return false;
+            }
+        });
+
+
+    </script>
+</body>
+</html>
