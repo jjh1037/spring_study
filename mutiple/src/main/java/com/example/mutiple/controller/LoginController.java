@@ -25,13 +25,13 @@ public class LoginController {
         return "register";
     }
 
-    @GetMapping("idCheck")
+    @GetMapping("/idCheck")
     @ResponseBody
     public Map<String, Object> geteidCheck (@RequestParam String userid) {
         String result = loginService.idCheck(userid);
         return Map.of("msg", result);
-
-
     }
+
+
 
 }

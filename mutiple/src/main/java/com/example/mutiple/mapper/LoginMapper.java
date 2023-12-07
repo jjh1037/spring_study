@@ -1,5 +1,6 @@
 package com.example.mutiple.mapper;
 
+import com.example.mutiple.dto.ConfigDto;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -8,4 +9,6 @@ import org.apache.ibatis.annotations.Select;
 public interface LoginMapper {
     @Select("SELECT COUNT(*) FROM member WHERE userid = #{userid}")
     int idCheck(String userid);
+
+
 }
