@@ -32,21 +32,26 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr th:each="board: ${board}">
                 <td>
                     <input type="checkbox">
                 </td>
-                <td>2</td>
+                <td>[[${board.id}]]</td>
                 <td style="text-align: left; margin-left: 10px;">
                     <strong>
-                    <a th:href="@{/board/view?(configCode=${configCode})}">코리아아이티 아카데미</a>
+                    <a th:href="@{/board/boardView?(configCode=${configCode},id=${board.id})}">[[${board.subject}]]</a>
                     </strong>
                 </td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-                <td>8</td>
+                <td>[[${board.writer}]]</td>
+                <td>[[${board.visit}]]</td>
+                <td>[[${board.regdate}]]</td>
+                <td>-</td>
+                <td>
+                    <a href="">
+                        <button type="button" class="btn green">수정</button>
+                        <button type="button" class="btn red">삭제</button>
+                    </a>
+                </td>
             </tr>
             </tbody>
         </table>
