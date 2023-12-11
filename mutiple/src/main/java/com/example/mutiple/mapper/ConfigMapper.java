@@ -25,6 +25,7 @@ public interface ConfigMapper {
             "grp int,\n" +
             "seq int,\n" +
             "depth int,\n" +
+            "isFiles char(1) default 'N',\n" +  // 첨부파일이 없으면 기본값 N
             "primary key(id)\n" +
             ");")
     void makeBoard(String configCode);
@@ -71,4 +72,7 @@ public interface ConfigMapper {
 
     @Select("DROP TABLE comment_${configCode}")
     void dropComment(String configCode);
+
+    @Select("SELECT * FROM config WHERE config_code = #{configCode}")
+    ConfigDto getBoardConfig(String configCode);
 }

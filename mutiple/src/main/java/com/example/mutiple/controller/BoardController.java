@@ -2,6 +2,8 @@ package com.example.mutiple.controller;
 
 import com.example.mutiple.dto.BoardDto;
 import com.example.mutiple.dto.FileDto;
+import com.example.mutiple.mapper.BoardMapper;
+import com.example.mutiple.mapper.ConfigMapper;
 import com.example.mutiple.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,12 +30,15 @@ public class BoardController {
     @Autowired
     BoardService boardService;
 
+    @Autowired
+    ConfigMapper configMapper;
 
     @GetMapping("/board/boardList")
-    public String getBoardList(@RequestParam String configCode, Model model) {
+    public String getBoardList(@RequestParam String configCode, Model model,
+                               @RequestParam(value = "page", defaultValue = "1") int page) {
         model.addAttribute("configCode", configCode);
-
-        model.addAttribute("board", boardService.getBoardList(configCode));
+        model.addAttribute("board", boardService.getBoardList(configCode, page));
+        model.addAttribute("config", configMapper.getBoardConfig(configCode));
         return "board/boardList";
     }
 
@@ -50,10 +55,9 @@ public class BoardController {
         int grp = boardService.getGrpMaxCnt(boardDto.getConfigCode());
         boardDto.setGrp(grp);
 
-        boardService.setBoard(boardDto);
-
-
         if(!files.get(0).isEmpty()) {
+            boardDto.setIsFiles("Y"); // isFiles 추가
+            boardService.setBoard(boardDto);
             int fileID = boardDto.getId();
 
             // 20231207
@@ -87,16 +91,11 @@ public class BoardController {
 
                 boardService.setFiles(fileDto);
             }
+
+
+        } else{
+            boardService.setBoard(boardDto);
         }
-
-//        if(boardDto != null) {
-//            int grp = boardService.getGrpMaxCnt(boardDto.getConfigCode());
-//
-//            boardDto.setGrp(grp);
-//            boardService.setBoard(boardDto);
-//        }
-
-//        model.addAttribute("configCode", boardDto.getConfigCode());
 
         return "redirect:/board/boardList?configCode="+boardDto.getConfigCode() ;
     }
@@ -106,7 +105,28 @@ public class BoardController {
                                @RequestParam int id, Model model) {
         model.addAttribute("board", boardService.getBoard(configCode, id));
         model.addAttribute("files", boardService.getFiles(configCode, id));
+        model.addAttribute("configCode", configCode);
         return "board/boardView";
+    }
+
+    @GetMapping("/board/boardDelete")
+    public String getBoardDelete(@ModelAttribute BoardDto boardDto) {
+
+        if(!boardDto.getConfigCode().isEmpty() && boardDto.getId() > 0) {
+            boardService.getBoardDelete(boardDto); // 내용 
+            
+            // 파일 삭제
+            List<FileDto> files = boardService.getFiles(boardDto.getConfigCode(), boardDto.getId());
+            for(FileDto fd: files) {
+                File file = new File(fd.getSavedPathName() + "/" + fd.getSavedFileName());
+                file.delete();
+            }
+            
+            // 파일 디비
+            boardService.setFilesDelete(boardDto);
+        }
+
+        return "redirect:/board/boardList?configCode="+boardDto.getConfigCode();
     }
 
 }

@@ -13,21 +13,7 @@ public class BoardDto {
     private int grp;
     private int seq;
     private int depth;
-
-    @Override
-    public String toString() {
-        return "BoardDto{" +
-                "id=" + id +
-                ", subject='" + subject + '\'' +
-                ", writer='" + writer + '\'' +
-                ", content='" + content + '\'' +
-                ", visit=" + visit +
-                ", regdate=" + regdate +
-                ", grp=" + grp +
-                ", seq=" + seq +
-                ", depth=" + depth +
-                '}';
-    }
+    private String isFiles;
 
     public String getConfigCode() {
         return configCode;
@@ -107,5 +93,30 @@ public class BoardDto {
 
     public void setDepth(int depth) {
         this.depth = depth;
+    }
+
+    public String getIsFiles() {
+        return isFiles;
+    }
+
+    public void setIsFiles(String isFiles) {
+        this.isFiles = isFiles;
+    }
+
+    @Override
+    public String toString() {
+        return "BoardDto{" +
+                "configCode='" + configCode + '\'' +
+                ", id=" + id +
+                ", subject='" + subject + '\'' +
+                ", writer='" + writer + '\'' +
+                ", content='" + content + '\'' +
+                ", visit=" + visit +
+                ", regdate=" + regdate +
+                ", grp=" + grp +
+                ", seq=" + seq +
+                ", depth=" + depth +
+                ", isFiles='" + isFiles + '\'' +
+                '}';
     }
 }
