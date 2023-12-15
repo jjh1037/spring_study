@@ -2,7 +2,7 @@
 
 .comment-wrap {
     margin-top: 50px;
-    background-color: #a7a7a7;
+    background-color: #333333;
     color: #fff;
     padding:20px;
 }
@@ -35,6 +35,10 @@ input {
 
 .comment-box:nth-child(odd) {
     background-color: #0f2c2c;
+}
+
+.comment-box:nth-child(even) {
+    background-color: #a7a7a7;
 }
 
 .comment-box h3 span {

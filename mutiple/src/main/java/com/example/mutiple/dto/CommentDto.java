@@ -4,23 +4,13 @@ import java.time.LocalDate;
 
 public class CommentDto {
     private int cId;
+    private int bId;
     private String cSubject;
     private String cWriter;
     private String cComment;
     private int cVisit;
     private LocalDate cRegdate;
-
-    @Override
-    public String toString() {
-        return "CommentDto{" +
-                "cId=" + cId +
-                ", cSubject='" + cSubject + '\'' +
-                ", cWriter='" + cWriter + '\'' +
-                ", cComment='" + cComment + '\'' +
-                ", cVisit=" + cVisit +
-                ", cRegdate=" + cRegdate +
-                '}';
-    }
+    private String configCode;
 
     public int getcId() {
         return cId;
@@ -28,6 +18,14 @@ public class CommentDto {
 
     public void setcId(int cId) {
         this.cId = cId;
+    }
+
+    public int getbId() {
+        return bId;
+    }
+
+    public void setbId(int bId) {
+        this.bId = bId;
     }
 
     public String getcSubject() {
@@ -68,5 +66,13 @@ public class CommentDto {
 
     public void setcRegdate(LocalDate cRegdate) {
         this.cRegdate = cRegdate;
+    }
+
+    public String getConfigCode() {
+        return configCode;
+    }
+
+    public void setConfigCode(String configCode) {
+        this.configCode = configCode;
     }
 }

@@ -58,7 +58,7 @@ th:nth-child(8) {
     margin-top: 10px;
 }
 
-.bottom-left a:active {
+.bottom-left a.active {
     background-color: var(--table-bg-color);
     font-weight: bold;
 }
@@ -83,4 +83,19 @@ th:nth-child(8) {
 
 .bottom-left a:not(first-child) {
     margin-left: -4px;
+}
+
+select {
+    width: 100px;
+    padding: 5px 10px;
+}
+
+input {
+    width: 150px;
+    padding: 6px 10px;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
 }

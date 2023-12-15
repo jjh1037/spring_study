@@ -32,17 +32,19 @@ public class BoardService {
 
     }
 
-    public List<BoardDto> getBoardList(String configCode, int page) { // 리스트와 페이지 get
-        PageDto pd = PageInfo(configCode, page);
+    public List<BoardDto> getBoardList(String configCode, int page, String searchType, String words) { // 리스트와 페이지 get
+        PageDto pd = PageInfo(configCode, page, searchType, words);
+        String searchQuery = getSearch(searchType, words);
 
         Map<String, Object> map = new HashMap<>();
         map.put("configCode", configCode);
         map.put("startNum", pd.getStartNum());
         map.put("offset", pd.getPageCount());
+        map.put("searchQuery", searchQuery);
 
         return boardMapper.getBoardList(map);
-
     }
+
 
     public BoardDto getBoard(String configCode, int id) {
         return boardMapper.getBoard(configCode, id);
@@ -60,14 +62,15 @@ public class BoardService {
         boardMapper.setFilesDelete(boardDto);
     }
 
-    public PageDto PageInfo(String configCode, int page) { // 페이지 개수 서비스
+    public PageDto PageInfo(String configCode, int page, String searchType, String words) { // 페이지 개수 서비스
         PageDto pageDto = new PageDto();
 
+        String seaerchQuery = getSearch(searchType, words);
         // 전체 게시물 수
-        int totalCount = boardMapper.getBoardCount(configCode);
+        int totalCount = boardMapper.getBoardCount(configCode, seaerchQuery);
 
         int totalPage = (int)Math.ceil((double) totalCount / pageDto.getPageCount());
-        int startPage = (((int)Math.ceil((double)page / pageDto.getBlockCount())) - 1) * pageDto.getBlockCount();
+        int startPage = ((int) (Math.ceil((double)page / pageDto.getBlockCount())) - 1) * pageDto.getBlockCount() + 1;
         int endPage = startPage + pageDto.getBlockCount() - 1;
 
         if(endPage > totalPage) {
@@ -78,16 +81,22 @@ public class BoardService {
         pageDto.setTotalPage(totalPage);
         pageDto.setStartPage(startPage);
         pageDto.setEndPage(endPage);
+        pageDto.setPage(page);
 
         return pageDto;
     }
 
+    public String getSearch(String searchType, String words) {
 
+        String searchQuery = "";
 
-
-
-
-
-
-
+        if(searchType.equals("writer")) {
+            searchQuery = " WHERE writer = '"+words+"'";
+        } else if(searchType.equals("content")) {
+            searchQuery = " WHERE content LIKE '%"+words+"%'";
+        } else {
+            searchQuery = "";
+        }
+        return searchQuery;
+    }
 }

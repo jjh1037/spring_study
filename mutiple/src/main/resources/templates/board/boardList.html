@@ -16,6 +16,7 @@
                 <i class="fa-solid fa-caret-right"></i> KOREA IT ACADEMY >
                 <span class="ko">[[${config.configTitle}]]</span>
             </h3>
+            <span>게시물 수 : [[${total}]]개</span>
         </div>
 
         <table th:style="|border-top: 3px solid ${config.configColor}|">
@@ -32,11 +33,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="board: ${board}">
+            <tr th:each="board, k: ${board}">
                 <td>
                     <input type="checkbox">
                 </td>
-                <td>[[${board.id}]]</td>
+                <td>[[${total - (((page.page - 1) * page.pageCount) + k.index) }]]</td>
                 <td style="text-align: left; margin-left: 10px;">
                     <strong>
                     <a th:href="@{/board/boardView?(configCode=${configCode},id=${board.id})}">[[${board.subject}]]</a>
@@ -65,18 +66,48 @@
         <div class="bottom">
             <div class="bottom-left">
 
-                <a href="">
+                <a href="#" th:if="${page.page <= 1}">
+                    <i class="fa-solid fa-angle-left"></i>
+                </a>
+                <a th:href="@{/board/boardList?(configCode=${configCode}, page=${page.page - 1})}" th:unless="${page.page <= 1}">
                     <i class="fa-solid fa-angle-left"></i>
                 </a>
 
-                <a href="">1</a>
-                <a href="">2</a>
-                <a href="">3</a>
 
-                <a href="">
+                <th:block th:each="i : ${#numbers.sequence(page.startPage, page.endPage, 1)}" > <!-- i는 별명 -->
+                    <th:block th:if="${page.page eq i }">
+                        <a class="active" th:href="@{/board/boardList?(configCode=${configCode}, page=${i})}">
+                            [[${i}]]
+                        </a>
+                    </th:block>
+                    <th:block th:unless="${page.page eq i }">
+                        <a th:href="@{/board/boardList?(configCode=${configCode}, page=${i})}">
+                            [[${i}]]
+                        </a>
+                    </th:block>
+                </th:block>
+
+                <a href="#" th:if="${page.page >= page.totalPage}">
                     <i class="fa-solid fa-angle-right"></i>
                 </a>
+                <a th:href="@{/board/boardList?(configCode=${configCode}, page=${page.page + 1})}" th:unless="${page.page >= page.totalPage}">
+                    <i class="fa-solid fa-angle-right"></i>
+                </a>
+
             </div>
+            
+            <div class="bottom-center">
+                <form action="/board/boardList" method="get">
+                    <input type="hidden" name="configCode" th:value="${configCode}">
+                    <select name="searchType">
+                        <option value="writer">작성자</option>
+                        <option value="content">제목</option>
+                    </select>
+                    <input type="text" name="words" required>
+                    <button type="submit" class="btn blue">검색</button>
+                </form>
+            </div>
+            
             <div class="bottom-right">
                 <a th:href="@{/board/boardList?(configCode=${configCode})}">
                     <button type="button" class="btn black">게시물목록</button>
